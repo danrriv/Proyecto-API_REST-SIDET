@@ -17,119 +17,123 @@ public class Customer implements Serializable{
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer client_id;
+    private Integer customer_id;
     
     @Column(nullable=false,length = 8)
-    private String dni;
+    private String customer_dni;
     
     @Column(nullable=false,length = 50)
-    private String surnames;
+    private String customer_surnames;
     
     @Column(nullable=false,length = 50)
-    private String names;
+    private String customer_names;
     
     @Column(length = 9)
-    private String phone_number;
+    private String customer_phone_number;
     
     @Column(length = 200)
-    private String address;
+    private String customer_address;
     
     @Column(nullable=false,length = 100)
-    private String email;
+    private String customer_email;
     
     @Column(nullable=false,length = 255)
-    private String password;
+    private String customer_password;
     
     @Column(length = 10)
-    private String status;
+    private String customer_status;
     
     public Customer() {
 	}
 
-	public Customer(Integer client_id, String dni, String surnames, String names, String phone_number, String address,
-			String email, String password, String status) {
-		this.client_id = client_id;
-		this.dni = dni;
-		this.surnames = surnames;
-		this.names = names;
-		this.phone_number = phone_number;
-		this.address = address;
-		this.email = email;
-		this.password = password;
-		this.status = status;
+	public Customer(Integer customer_id, String customer_dni, String customer_surnames, String customer_names,
+			String customer_phone_number, String customer_address, String customer_email, String customer_password,
+			String customer_status) {
+		this.customer_id = customer_id;
+		this.customer_dni = customer_dni;
+		this.customer_surnames = customer_surnames;
+		this.customer_names = customer_names;
+		this.customer_phone_number = customer_phone_number;
+		this.customer_address = customer_address;
+		this.customer_email = customer_email;
+		this.customer_password = customer_password;
+		this.customer_status = customer_status;
 	}
 
-	public Integer getClient_id() {
-		return client_id;
+	public Integer getCustomer_id() {
+		return customer_id;
 	}
 
-	public void setClient_id(Integer client_id) {
-		this.client_id = client_id;
+	public void setCustomer_id(Integer customer_id) {
+		this.customer_id = customer_id;
 	}
 
-	public String getDni() {
-		return dni;
+	public String getCustomer_dni() {
+		return customer_dni;
 	}
 
-	public void setDni(String dni) {
-		this.dni = dni;
+	public void setCustomer_dni(String customer_dni) {
+		this.customer_dni = customer_dni;
 	}
 
-	public String getSurnames() {
-		return surnames;
+	public String getCustomer_surnames() {
+		return customer_surnames;
 	}
 
-	public void setSurnames(String surnames) {
-		this.surnames = surnames;
+	public void setCustomer_surnames(String customer_surnames) {
+		this.customer_surnames = customer_surnames;
 	}
 
-	public String getNames() {
-		return names;
+	public String getCustomer_names() {
+		return customer_names;
 	}
 
-	public void setNames(String names) {
-		this.names = names;
+	public void setCustomer_names(String customer_names) {
+		this.customer_names = customer_names;
 	}
 
-	public String getPhone_number() {
-		return phone_number;
+	public String getCustomer_phone_number() {
+		return customer_phone_number;
 	}
 
-	public void setPhone_number(String phone_number) {
-		this.phone_number = phone_number;
+	public void setCustomer_phone_number(String customer_phone_number) {
+		this.customer_phone_number = customer_phone_number;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getCustomer_address() {
+		return customer_address;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setCustomer_address(String customer_address) {
+		this.customer_address = customer_address;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getCustomer_email() {
+		return customer_email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setCustomer_email(String customer_email) {
+		this.customer_email = customer_email;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getCustomer_password() {
+		return customer_password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setCustomer_password(String customer_password) {
+		this.customer_password = customer_password;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getCustomer_status() {
+		return customer_status;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setCustomer_status(String customer_status) {
+		this.customer_status = customer_status;
 	}
+
     
+
+	
 	
 }

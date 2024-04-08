@@ -55,4 +55,9 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerRepository.find_email(email);
 	}
 
+	@Override
+	public Customer findByConfirmationToken(String token) {
+		return customerRepository.findByConfirmationToken(token);
+	}
+
 }

@@ -31,9 +31,6 @@ public class Customer implements Serializable{
     @Column(length = 9)
     private String customer_phone_number;
     
-    @Column(length = 200)
-    private String customer_address;
-    
     @Column(nullable=false,length = 100)
     private String customer_email;
     
@@ -43,22 +40,27 @@ public class Customer implements Serializable{
     @Column(length = 10)
     private String customer_status;
     
+    @Column(length = 255)
+    private String customer_token;
+    
     public Customer() {
 	}
 
+	
 	public Customer(Integer customer_id, String customer_dni, String customer_surnames, String customer_names,
-			String customer_phone_number, String customer_address, String customer_email, String customer_password,
-			String customer_status) {
+			String customer_phone_number, String customer_email, String customer_password,
+			String customer_status, String customer_token) {
 		this.customer_id = customer_id;
 		this.customer_dni = customer_dni;
 		this.customer_surnames = customer_surnames;
 		this.customer_names = customer_names;
 		this.customer_phone_number = customer_phone_number;
-		this.customer_address = customer_address;
 		this.customer_email = customer_email;
 		this.customer_password = customer_password;
 		this.customer_status = customer_status;
+		this.customer_token = customer_token;
 	}
+
 
 	public Integer getCustomer_id() {
 		return customer_id;
@@ -100,14 +102,6 @@ public class Customer implements Serializable{
 		this.customer_phone_number = customer_phone_number;
 	}
 
-	public String getCustomer_address() {
-		return customer_address;
-	}
-
-	public void setCustomer_address(String customer_address) {
-		this.customer_address = customer_address;
-	}
-
 	public String getCustomer_email() {
 		return customer_email;
 	}
@@ -132,8 +126,15 @@ public class Customer implements Serializable{
 		this.customer_status = customer_status;
 	}
 
-    
 
-	
+	public String getCustomer_token() {
+		return customer_token;
+	}
+
+
+	public void setCustomer_token(String customer_token) {
+		this.customer_token = customer_token;
+	}
+
 	
 }

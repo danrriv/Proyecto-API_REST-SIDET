@@ -11,4 +11,5 @@ public interface CustomerService {
 	public abstract Customer find_id(Integer customer_id);
 	public abstract Collection<Customer> list();
 	public abstract Customer find_email(String email);
+	public abstract Customer findByConfirmationToken(String token);
 }

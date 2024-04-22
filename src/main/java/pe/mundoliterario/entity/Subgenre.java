@@ -1,7 +1,6 @@
 package pe.mundoliterario.entity;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,40 +10,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="subgenre")
-public class Subgenre {
+public class Subgenre implements Serializable{
 
-private static final long serialVersionUID = 1L; 
-	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer subgenre_id;
 	
-	@Column(nullable=false,length = 100)
+	@Column(nullable=false,length = 30)
 	private String subgenre_name;
 	
-	/*
-	@ManyToMany(mappedBy = "itemsSubgenero")
-	private Set<Genero> itemsGenero = new HashSet<>();
-	
-	*/
-	@OneToMany(mappedBy="subgenre")
-	private Collection<Book> itemsBook=new ArrayList<>();
+	@ManyToMany(mappedBy = "itemsSubgenre")
+	private Set<Genre> itemsGenre = new HashSet<>();
 	
 	public Subgenre() {
-	// TODO Auto-generated constructor stub
 	}
-	
-	
+
 	public Subgenre(Integer subgenre_id, String subgenre_name) {
 		this.subgenre_id = subgenre_id;
 		this.subgenre_name = subgenre_name;
 	}
-
 
 	public Integer getSubgenre_id() {
 		return subgenre_id;
@@ -61,14 +51,7 @@ private static final long serialVersionUID = 1L;
 	public void setSubgenre_name(String subgenre_name) {
 		this.subgenre_name = subgenre_name;
 	}
-
-	public Collection<Book> getItemsBook() {
-		return itemsBook;
-	}
-
-	public void setItemsBook(Collection<Book> itemsBook) {
-		this.itemsBook = itemsBook;
-	}	
 	
 	
 }
+

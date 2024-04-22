@@ -2,8 +2,10 @@ package pe.mundoliterario.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import pe.mundoliterario.entity.SaleDetails;
+import pe.mundoliterario.entity.Book;
 
-public interface SaleDetailsRepository extends JpaRepository<SaleDetails, Integer> {
+//import pe.mundoliterario.entity.SaleDetails;
+
+public interface SaleDetailsRepository extends JpaRepository<Book, Integer> {
 
 }

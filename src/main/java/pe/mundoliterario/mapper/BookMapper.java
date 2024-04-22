@@ -37,11 +37,13 @@ public class BookMapper {
 	public BookMapper() {
 	}
 	
+	/* 
 	public BookMapper(Book book) {
 		this(book.getBook_id(), book.getName(), book.getWeight(), book.getEditorial(), book.getWidth(),
 				book.getHeigth(), book.getStock(), book.getPrice(), book.getNpages(), book.getYear(),
 				book.getSynopsis(), book.getStatus(), book.getAutor(), book.getImg());
 	}
+	*/
 	
 
 	public BookMapper(Integer book_id, String name, Double weight, String editorial, Double width, Double heigth,

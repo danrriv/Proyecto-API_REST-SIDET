@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +47,7 @@ public class CustomerController {
 	
 	
 	@PostMapping("/customer/login")
-	public ResponseEntity<String> generateToken_POST(@RequestBody Login login) {
+	public ResponseEntity<String> login_customers(@RequestBody Login login) {
 	    if (login.getEmail() == null || login.getEmail().isEmpty() || login.getPassword() == null || login.getPassword().isEmpty()) {
 	        System.out.println("Correo electrónico o contraseña nulos.");
 	        return new ResponseEntity<>("Correo electrónico o contraseña nulos", HttpStatus.BAD_REQUEST);
@@ -57,7 +56,9 @@ public class CustomerController {
 	    Customer customer = customerService.find_email(login.getEmail());
 	    if (customer != null && passwordEncoder.matches(login.getPassword(), customer.getCustomer_password())) {
 	    	if (customer.getCustomer_status().equals("ACTIVO")) {
-		    	String token = generateConfirmationToken(customer);
+		    	String token = generateToken(customer);
+		    	customer.setCustomer_token(token);
+		    	customerService.update(customer);
 		        System.out.println("Inicio de sesión exitoso para el usuario: " + customer.getCustomer_email());
 		        return new ResponseEntity<>(token, HttpStatus.OK);
 	    	}
@@ -81,7 +82,7 @@ public class CustomerController {
 		return new ResponseEntity<>(collection,HttpStatus.OK);
 	}
 
-	private String generateConfirmationToken(Customer customer) {
+	private String generateToken(Customer customer) {
 		JwtCustomer jwtCustomer = new JwtCustomer(customer.getCustomer_id(), customer.getCustomer_email());
 	    String token = this.jwtGenerator.generateToken(jwtCustomer);
 	    return token;
@@ -102,7 +103,7 @@ public class CustomerController {
 	    	 customer.setCustomer_status("PENDIENTE");
 	    	 
 	    	// Generar y asociar un token único para la confirmación por correo 
-	         String confirmationToken = generateConfirmationToken(customer); // Genera un token JWT para la confirmación
+	         String confirmationToken = generateToken(customer); // Genera un token JWT para la confirmación
 	         customer.setCustomer_token(confirmationToken);
 	         
 	         customerService.create(customer);
@@ -308,23 +309,7 @@ public class CustomerController {
 	}
 	
 	
-	
-	@DeleteMapping("/auth/customer/eliminar/{customer_id}")
-	public ResponseEntity<?> delete_customer( @PathVariable Integer customer_id)
-	{
-		Customer customerDb=customerService.find_id(customer_id);
-		
-		if(customerDb!=null){
-			
-			customerService.delete(customer_id);
-			
-			return new ResponseEntity<>("Cliente eliminado correctamente.",HttpStatus.OK);
-		}
-		
-		return new ResponseEntity<>("Cliente no existe.",HttpStatus.NOT_FOUND);
-	}
-	
-	@GetMapping("/auth/customer/buscar/{customer_id}")
+	@GetMapping("/auth/customer/findId/{customer_id}")
 	public ResponseEntity<?> find_customer_id( @PathVariable Integer customer_id)
 	{
 		Customer customerDb=customerService.find_id(customer_id);
@@ -335,6 +320,22 @@ public class CustomerController {
 		}
 		
 		return new ResponseEntity<>("Cliente no encontrado.",HttpStatus.NOT_FOUND);
+	}
+	
+	@PostMapping("/logout/{token}")
+	public ResponseEntity<?> logout_customer(@PathVariable String token) {
+		 Customer customer = customerService.findByConfirmationToken(token);
+		    
+		    if (customer != null) {
+		        customer.setCustomer_token(null); // Eliminar el token
+		        
+	        // Guardar el cambio en la base de datos
+		        customerService.update(customer);
+	        
+	        return ResponseEntity.ok().build();
+	    } else {
+	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró un usuario con ese token");
+	    }
 	}
 
 

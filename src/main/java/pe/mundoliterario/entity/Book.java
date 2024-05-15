@@ -113,8 +113,6 @@ public class Book implements Serializable {
 		this.author = author;
 	}
 	*/
-	
-	
 	/*
 	//Método para convertir a BLOB
 	   private byte[] convertMultipartFileToBytes(MultipartFile file) {

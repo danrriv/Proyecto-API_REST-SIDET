@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.mundoliterario.entity.Customer;
 import pe.mundoliterario.repository.CustomerRepository;
 import pe.mundoliterario.service.CustomerService;
+import pe.mundoliterario.vo.CustomerLoginDto;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -58,6 +59,11 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Customer findByConfirmationToken(String token) {
 		return customerRepository.findByConfirmationToken(token);
+	}
+
+	@Override
+	public CustomerLoginDto findByEmailDto(String email) {
+		return customerRepository.findyByEmailDto(email);
 	}
 
 }

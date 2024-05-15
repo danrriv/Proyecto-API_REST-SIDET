@@ -7,7 +7,6 @@ import pe.mundoliterario.entity.Book;
 import pe.mundoliterario.mapper.BookMapper;
 
 public class MapperMundoLiterario {
-	
 	/*
 	public static Collection<BookMapper> toBook(Collection<Book> books){
 		Collection<BookMapper> collection = new ArrayList<>();
@@ -22,6 +21,6 @@ public class MapperMundoLiterario {
 	public static BookMapper toBooks(Book book) {
 		BookMapper mapper = new BookMapper(book);
 		return mapper;
-	}*/
+	} */
 
 }

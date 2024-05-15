@@ -29,11 +29,11 @@ public class BookController {
 	public BookController() {
 		// TODO Auto-generated constructor stub
 	}
-	
+	/* 
 	@GetMapping("/list")
 	public ResponseEntity<?> list_GET(){
 		return new ResponseEntity<>(MapperMundoLiterario.toBook(service.findAll()), HttpStatus.OK);
-	}
+	}*/
 	
 	@PostMapping("/save")
 	public ResponseEntity<?> save_POST(@RequestBody Book book) {
@@ -113,11 +113,11 @@ public class BookController {
 
 		Book BookBd = service.findById(id);
 
-		if (BookBd != null) {
+		/*if (BookBd != null) {
 
 			return new ResponseEntity<>(MapperMundoLiterario.toBooks(BookBd), HttpStatus.OK);
 
-		}
+		}*/
 		return new ResponseEntity<>("¡Libro no existe!", HttpStatus.NOT_FOUND);
 	}
 	

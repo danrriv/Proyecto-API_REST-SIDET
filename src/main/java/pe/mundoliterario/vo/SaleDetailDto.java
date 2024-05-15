@@ -1,17 +1,21 @@
-package pe.mundoliterario.dto;
+package pe.mundoliterario.vo;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import pe.mundoliterario.entity.Sale;
 import pe.mundoliterario.entity.SaleDetails;
 
-public class SaleDetailDTO {
+public class SaleDetailDto {
 
+	
+	@JsonBackReference
 	private Sale sale;
 	
 	private List<SaleDetails> details;
 	
-	public SaleDetailDTO() {
+	public SaleDetailDto() {
 		// TODO Auto-generated constructor stub
 	}
 

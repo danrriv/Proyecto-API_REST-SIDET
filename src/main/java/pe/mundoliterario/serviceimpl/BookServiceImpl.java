@@ -49,4 +49,40 @@ public class BookServiceImpl implements BookService {
     public Collection<Book> findAll() {
         return r.findAll();
     }
+
+
+	@Override
+	@Transactional(readOnly=true)
+	public Book findByName(String book_name) {
+		return r.findbyName(book_name);
+	}
+
+
+	@Override
+	@Transactional(readOnly=true)
+	public Collection<Book> findBySimilarName(String book_name) {
+		return r.findBySimilarName(book_name);
+	}
+
+
+	@Override
+	@Transactional(readOnly=true)
+	public Collection<Book> listRandom9() {
+		return r.listRandom9();
+	}
+
+
+	@Override
+	@Transactional(readOnly=true)
+	public Collection<Book> listByGenre(Integer id) {
+		return r.listbyGenre(id);
+	}
+
+
+	@Override
+	@Transactional(readOnly=true)
+	public Collection<Book> listBySubgenre(Integer id) {
+		return r.listbySubGenre(id);
+	}
+
 }

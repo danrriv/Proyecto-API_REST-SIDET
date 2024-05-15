@@ -1,19 +1,22 @@
 package pe.mundoliterario.controller;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import pe.mundoliterario.service.BookService;
 import pe.mundoliterario.util.MapperMundoLiterario;
@@ -21,23 +24,20 @@ import pe.mundoliterario.entity.Book;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/book")
 public class BookController {
 
-	@Autowired BookService service;
+	@Autowired 
+	BookService service;
 	
 	public BookController() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	@GetMapping("/list")
-	public ResponseEntity<?> list_GET(){
-		return new ResponseEntity<>(MapperMundoLiterario.toBook(service.findAll()), HttpStatus.OK);
-	}
-	
+
+	//Métodos CRUD
 	@PostMapping("/save")
 	public ResponseEntity<?> save_POST(@RequestBody Book book) {
-
+		
 		service.insert(book);
 
 		Map<String, String> response = new HashMap<>();
@@ -46,7 +46,7 @@ public class BookController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
-	@PutMapping("/edit/{id_libro}")
+	@PutMapping("/edit/{id}")
 	public ResponseEntity<?> editar_PUT(@RequestBody Book book, @PathVariable Integer id)
 
 	{
@@ -56,27 +56,35 @@ public class BookController {
 
 		if (BookDb != null) {
 
-			BookDb.setName(book.getName());
+			BookDb.setBook_name(book.getBook_name());
 
-			BookDb.setWeight(book.getWeight()); //peso
+			BookDb.setBook_weight(book.getBook_weight()); //peso
 
-			BookDb.setEditorial(book.getEditorial());
+			BookDb.setBook_editorial(book.getBook_editorial());
 
-			BookDb.setWidth(book.getWidth()); //alto 
-
-			BookDb.setHeigth(book.getHeigth()); //ancho
-
-			BookDb.setYear(book.getYear());
-
-			BookDb.setNpages(book.getNpages());
-
-			//BookDb.setNombre_autor(book.getNombre_autor());
-
-			BookDb.setPrice(book.getPrice());
-
-			BookDb.setImg(book.getImg());
+			BookDb.setBook_width(book.getBook_width()); //alto
 			
-			//LibroDb.setSubgenero(book.getSubgenero());
+			BookDb.setBook_heigth(book.getBook_heigth()); //ancho
+			
+			BookDb.setBook_stock(book.getBook_stock());
+			
+			BookDb.setBook_price(book.getBook_price());
+
+			BookDb.setBook_npages(book.getBook_npages());
+			
+			BookDb.setBook_year(book.getBook_year());
+			
+			BookDb.setBook_synopsis(book.getBook_synopsis());
+			
+			BookDb.setBook_status(book.getBook_status());
+			
+			BookDb.setBook_notification_status(book.getBook_notification_status());
+			
+			BookDb.setBook_img(book.getBook_img());
+
+			BookDb.setAuthor(book.getAuthor());
+		
+			BookDb.setSubgenre(book.getSubgenre());
 
 			service.update(BookDb);
 
@@ -89,27 +97,10 @@ public class BookController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
 
-	@DeleteMapping("/delete/{id_libro}")
 
-	public ResponseEntity<?> borrar_DELETE(@PathVariable Integer id)
-
-	{
-		Book BookBd = service.findById(id);
-
-		if (BookBd != null) {
-
-			service.delete(id);
-
-			return new ResponseEntity<>("¡Libro borrado!", HttpStatus.OK);
-
-		}
-
-		return new ResponseEntity<>("¡Libro no existe!", HttpStatus.NOT_FOUND);
-
-	}
-
-	@GetMapping("/search/{id_libro}")
-	public ResponseEntity<?> buscarLibroId(@PathVariable Integer id) {
+	//Búsquedas
+	@GetMapping("/findIdM/{id}") //Realizar búsqueda con el formato del Mapper
+	public ResponseEntity<?> buscarLibroIdMapper(@PathVariable Integer id) {
 
 		Book BookBd = service.findById(id);
 
@@ -120,5 +111,95 @@ public class BookController {
 		}
 		return new ResponseEntity<>("¡Libro no existe!", HttpStatus.NOT_FOUND);
 	}
+	
+	@GetMapping("/findId/{id}") //Realizar búsqueda sin el formato del Mapper
+	public ResponseEntity<?> buscarLibroId(@PathVariable Integer id) {
+
+		Book BookBd = service.findById(id);
+
+		if (BookBd != null) {
+
+			return new ResponseEntity<>(BookBd, HttpStatus.OK);
+
+		}
+		return new ResponseEntity<>("¡Libro no existe!", HttpStatus.NOT_FOUND);
+	}
+	
+	
+	@GetMapping("/findName/{name}") //
+	public ResponseEntity<?> findBookName(@PathVariable String name) {
+
+		Book BookBd = service.findByName(name);
+
+		if (BookBd != null) {
+
+			return new ResponseEntity<>(BookBd, HttpStatus.OK);
+
+		}
+		return new ResponseEntity<>("¡Libro no existe!", HttpStatus.NOT_FOUND);
+		
+	}
+	
+	@GetMapping("/findSimilarName/{name}") //
+	public ResponseEntity<?> findSimilarBookName(@PathVariable String name) {
+
+		Collection<Book> books = service.findBySimilarName(name);
+
+		if(!books.isEmpty()) {
+			return new ResponseEntity<>(MapperMundoLiterario.toBook(books), HttpStatus.OK);
+		}
+		return new ResponseEntity<>("¡Libro no existe!", HttpStatus.NOT_FOUND);
+	}
+	
+	
+	//Listados
+	@GetMapping("/random") //Realizar búsqueda al azar con el formato del Mapper
+	public ResponseEntity<?> listRandom15() {
+
+		Collection<Book> BookBd = service.listRandom9();
+
+		if (BookBd != null) {
+
+			return new ResponseEntity<>(MapperMundoLiterario.toBook(service.listRandom9()), HttpStatus.OK);
+
+		}
+		return new ResponseEntity<>(":(", HttpStatus.NOT_FOUND);
+	}
+	
+	
+	@GetMapping("/list")
+	public ResponseEntity<?> list_GET(){
+		return new ResponseEntity<>(MapperMundoLiterario.toBook(service.findAll()), HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("/findGenreId/{id}") 
+	public ResponseEntity<?> findBookByGenre(@PathVariable Integer id) {
+
+		Collection<Book> books  = service.listByGenre(id);
+
+		if (!books.isEmpty()) {
+
+			return new ResponseEntity<>(MapperMundoLiterario.toBook(books), HttpStatus.OK);
+
+		}
+		return new ResponseEntity<>("¡No hay libros registrados!", HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/findSubgenreId/{id}") 
+	public ResponseEntity<?> findBookBySubgenre(@PathVariable Integer id) {
+
+		Collection<Book> books  = service.listBySubgenre(id);
+
+		if (!books.isEmpty()) {
+
+			return new ResponseEntity<>(MapperMundoLiterario.toBook(books), HttpStatus.OK);
+
+		}
+		return new ResponseEntity<>("¡No hay libros registrados!", HttpStatus.NOT_FOUND);
+	}
+	
+	
+
 	
 }

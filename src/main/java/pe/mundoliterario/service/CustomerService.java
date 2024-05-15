@@ -3,6 +3,7 @@ package pe.mundoliterario.service;
 import java.util.Collection;
 
 import pe.mundoliterario.entity.Customer;
+import pe.mundoliterario.vo.CustomerLoginDto;
 
 public interface CustomerService {
 	public abstract void create(Customer customer);
@@ -12,4 +13,5 @@ public interface CustomerService {
 	public abstract Collection<Customer> list();
 	public abstract Customer find_email(String email);
 	public abstract Customer findByConfirmationToken(String token);
+	public abstract CustomerLoginDto findByEmailDto(String email);
 }

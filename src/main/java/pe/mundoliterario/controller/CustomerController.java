@@ -23,6 +23,8 @@ import pe.mundoliterario.entity.Login;
 import pe.mundoliterario.entity.jwt.JwtCustomer;
 import pe.mundoliterario.jwt.JwtGeneratorCustomer;
 import pe.mundoliterario.service.CustomerService;
+import pe.mundoliterario.vo.CustomerLoginDto;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -69,6 +71,18 @@ public class CustomerController {
 
 	    System.out.println("Email o contraseña incorrecta para el correo electrónico: " + login.getEmail());
 	    return new ResponseEntity<>("Correo electrónico o contraseña incorrecta", HttpStatus.UNAUTHORIZED);
+	}
+	
+	
+	
+	@GetMapping("/customer/nameId/{email}")
+	public ResponseEntity<?> findNameId(String email){
+		CustomerLoginDto data = customerService.findByEmailDto(email);
+		if(data != null) {
+			return new ResponseEntity<>(data,HttpStatus.OK);
+		}
+		return new ResponseEntity<>("Error al obtener los datos.", HttpStatus.NOT_FOUND);
+		
 	}
 	
 	@GetMapping("/auth/customer/list")

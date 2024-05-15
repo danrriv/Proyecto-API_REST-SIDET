@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import pe.mundoliterario.entity.Customer;
+import pe.mundoliterario.vo.CustomerLoginDto;
 
 public interface CustomerRepository  extends JpaRepository<Customer, Integer> {
 	
@@ -12,4 +13,7 @@ public interface CustomerRepository  extends JpaRepository<Customer, Integer> {
 	
 	@Query(value = "SELECT * FROM customer where customer_token = :token" ,nativeQuery = true)
     Customer findByConfirmationToken(String token);
+	
+	@Query(value = "SELECT customer_id, customer_name  FROM customer where customer_email = :email" ,nativeQuery = true)
+    CustomerLoginDto findyByEmailDto(String email);
 }

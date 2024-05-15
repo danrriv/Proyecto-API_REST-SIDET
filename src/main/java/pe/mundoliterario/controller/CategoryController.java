@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pe.mundoliterario.entity.Category;
 import pe.mundoliterario.service.CategoryService;
+import pe.mundoliterario.vo.MenuData;
 
 @RestController
 public class CategoryController {
@@ -90,4 +91,15 @@ public class CategoryController {
 		response.put("message", "Categoría no encontrada.");
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
+	
+	@GetMapping("/category/menu")
+    public ResponseEntity<?> menu() {
+		
+		Collection<MenuData> collection = categoryService.listCategoryGenreSubgenre();
+		
+		if(collection.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(collection,HttpStatus.OK);
+    }
 }

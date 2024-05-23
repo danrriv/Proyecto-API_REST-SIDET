@@ -3,6 +3,17 @@ package pe.mundoliterario.controller;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +48,9 @@ public class UserController {
 	
 	@Autowired
 	private JwtGeneratorCustomer jwtGenerator;
+	
+	//almacena temporalmente los códigos de restablecimiento
+	private Map<String, String> resetCodeMap = new HashMap<>();
 
 	public UserController() {
 	}
@@ -126,6 +140,7 @@ public class UserController {
 			
 			user.setUser_id(user_id);
 			
+			
 			// Actualizar el estado del usuario si está presente en la solicitud
 	        if (user.getUser_status() != null) {
 	            userDb.setUser_status(user.getUser_status());
@@ -145,7 +160,7 @@ public class UserController {
 	            userDb.setRole(user.getRole());
 	        }
 	        
-	        userService.update(userDb);
+	        userService.update(user);
 	        
 			 response.put("message", "Se ha actualizado sus datos correctamente.");
 		        return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -220,5 +235,110 @@ public class UserController {
 	    } else {
 	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró un usuario con ese token");
 	    }
+	}
+	
+	private String generateResetCode() {
+	    // Generar un código aleatorio de 6 dígitos
+	    Random random = new Random();
+	    int code = 100000 + random.nextInt(900000); // Números aleatorios de 100000 a 999999
+	    
+	    return String.valueOf(code);
+	}
+	
+	@PostMapping("/user/sendResetCode")
+	public ResponseEntity<?> sendResetCode(@RequestBody String email) {
+		 User user = userService.find_email(email);
+	    
+	    if (user != null) {
+	        // Generar y enviar el código de restablecimiento por correo electrónico
+	        String resetCode = generateResetCode();
+	        resetCodeMap.put(email, resetCode); // Almacenar temporalmente el código
+	        sendResetCodeEmail(email, resetCode);
+	        
+	        return ResponseEntity.ok().build(); // Código de restablecimiento enviado correctamente
+	    } else {
+	        return ResponseEntity.notFound().build(); // No se encontró un usuario con ese correo electrónico
+	    }
+	}
+
+	@PostMapping("/user/resetPassword")
+	public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> requestData) {
+	    String resetCode = requestData.get("resetCode");
+	    String newPassword = requestData.get("newPassword");
+	    String email = requestData.get("email"); // También se debería enviar el correo electrónico del usuario
+	    
+	    // Verificar si el código de restablecimiento coincide con el almacenado temporalmente
+	    if (resetCodeMap.containsKey(email) && resetCodeMap.get(email).equals(resetCode)) {
+	        // Actualizar la contraseña del usuario
+	    	User user = userService.find_email(email);
+	        if (user != null) {
+	        	user.setUser_password(passwordEncoder.encode(newPassword));
+	        	userService.update(user);
+	            
+	            // Eliminar el código de restablecimiento después de usarlo
+	            resetCodeMap.remove(email);
+	            
+	            return ResponseEntity.ok().build(); // Contraseña restablecida correctamente
+	        }
+	    }
+	    
+	    return ResponseEntity.notFound().build(); // El código de restablecimiento no es válido
+	}
+	
+	private void sendResetCodeEmail(String recipientEmail, String resetCode) {
+	    // Configurar las propiedades para el servidor de correo de Gmail
+	    Properties properties = new Properties();
+	    properties.put("mail.smtp.host", "smtp.gmail.com");
+	    properties.put("mail.smtp.port", "587");
+	    properties.put("mail.smtp.auth", "true");
+	    properties.put("mail.smtp.starttls.enable", "true");
+	    
+	    // Configurar la autenticación con tu cuenta de Gmail
+	    String username = "econewscontacto@gmail.com";
+	    String password = "jgjo jygl trde rbtp"; //contraseña de aplicaciones
+	    Authenticator authenticator = new Authenticator() {
+	        protected PasswordAuthentication getPasswordAuthentication() {
+	            return new PasswordAuthentication(username, password);
+	        }
+	    };
+
+	    // Crear la sesión de correo
+	    Session session = Session.getInstance(properties, authenticator);
+
+	    try {
+	        // Crear el mensaje de correo
+	        Message message = new MimeMessage(session);
+	        message.setFrom(new InternetAddress(username)); // Correo del remitente
+	        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail)); // Correo del destinatario
+	        message.setSubject("Código de restablecimiento de contraseña"); // Asunto del correo
+	        String mensajeHtml = "<p>Hola,</p>"
+	                + "<p>Recibiste este correo electrónico porque solicitaste restablecer tu contraseña en Mundo Literario. "
+	                + "Tu código de restablecimiento es: <strong>" + resetCode + "</strong></p>"
+	                + "<p>Si no solicitaste este restablecimiento, puedes ignorar este correo electrónico.</p>"
+	                + "<p>Atentamente,<br/>Mundo Literario</p>";
+
+	        // Configurar el contenido del mensaje como HTML
+	        message.setContent(mensajeHtml, "text/html");
+	        
+	        // Enviar el mensaje de correo
+	        Transport.send(message);
+
+	        System.out.println("Correo de restablecimiento de contraseña enviado correctamente a: " + recipientEmail);
+	    } catch (MessagingException e) {
+	        System.out.println("Error al enviar el correo de restablecimiento de contraseña: " + e.getMessage());
+	    }
+	}
+	
+	@GetMapping("/user/findUserByToken/{token}")
+	public ResponseEntity<?> find_user_token( @PathVariable String token)
+	{
+		 User userDb = userService.findByToken(token);
+		
+		if(userDb!=null){
+			
+			return new ResponseEntity<>(userDb,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>("Usuario no encontrado.",HttpStatus.NOT_FOUND);
 	}
 }

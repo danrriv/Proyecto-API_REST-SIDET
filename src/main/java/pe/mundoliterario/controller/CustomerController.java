@@ -86,7 +86,7 @@ public class CustomerController {
 		
 	}
 	
-	@GetMapping("/auth/customer/list")
+	@GetMapping("/customer/list")
 	public ResponseEntity<?> list_customers(){
 		Collection<Customer> collection = customerService.list();
 		
@@ -287,7 +287,7 @@ public class CustomerController {
 	}
 	
 	
-	@PutMapping("/auth/customer/update/{customer_id}")
+	@PutMapping("/customer/update/{customer_id}")
 	public ResponseEntity<?> update_customer(@RequestBody Customer customer,
 			                            @PathVariable Integer customer_id)
 	{
@@ -297,20 +297,20 @@ public class CustomerController {
 		if(customerDb!=null){
 			
 			customer.setCustomer_id(customer_id);
+			
+			// Actualizar el email del usuario si está presente en la solicitud
+	        if (customer.getCustomer_email() != null) {
+	        	customerDb.setCustomer_email(customer.getCustomer_email());
+	        }
 	       
-	        if (!customer.getCustomer_status().isEmpty()) {
-	            customer.setCustomer_status(customer.getCustomer_status());
-	        } else {
-	        	 customer.setCustomer_status(customerDb.getCustomer_status());
+			 // Actualizar la contraseña del usuario si está presente en la solicitud
+	        if (customer.getCustomer_password() != null) {
+	        	customerDb.setCustomer_password(passwordEncoder.encode(customer.getCustomer_password()));
 	        }
 	        
-	        
-	        // Verificar si se proporcionó una nueva contraseña para actualizarla
-	        if (!customer.getCustomer_password().isEmpty()) {
-	            customer.setCustomer_password(passwordEncoder.encode(customer.getCustomer_password()));
-	        } else {
-	            // Si no se proporciona una nueva contraseña, mantener la contraseña original
-	            customer.setCustomer_password(customerDb.getCustomer_password());
+	        // Actualizar el teléfono del usuario si está presente en la solicitud
+	        if (customer.getCustomer_phone_number() != null) {
+	        	customerDb.setCustomer_phone_number(customer.getCustomer_phone_number());
 	        }
 			
 			customerService.update(customer);
@@ -323,7 +323,7 @@ public class CustomerController {
 	}
 	
 	
-	@GetMapping("/auth/customer/findId/{customer_id}")
+	@GetMapping("/customer/findId/{customer_id}")
 	public ResponseEntity<?> find_customer_id( @PathVariable Integer customer_id)
 	{
 		Customer customerDb=customerService.find_id(customer_id);
@@ -352,5 +352,17 @@ public class CustomerController {
 	    }
 	}
 
+	@GetMapping("/customer/findCustomerByToken/{token}")
+	public ResponseEntity<?> find_customer_token( @PathVariable String token)
+	{
+		 Customer customerDb = customerService.findByConfirmationToken(token);
+		
+		if(customerDb!=null){
+			
+			return new ResponseEntity<>(customerDb,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>("Cliente no encontrado.",HttpStatus.NOT_FOUND);
+	}
 
 }

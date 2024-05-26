@@ -1,5 +1,6 @@
 package pe.mundoliterario.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="sale")
-public class Sale {
+public class Sale implements Serializable {
 	
 	
 	private static final long serialVersionUID=1L;
@@ -49,7 +50,6 @@ public class Sale {
 	private Collection<SaleDetails> itemSalesDetail = new ArrayList<>();
 	
 	@ManyToOne
-	//@JsonBackReference
 	@JoinColumn(name = "customer_id", nullable =false)
 	private Customer customer;
 	

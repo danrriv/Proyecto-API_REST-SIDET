@@ -1,58 +1,38 @@
-package pe.mundoliterario.entity;
+package pe.mundoliterario.mapper;
 
-import java.io.Serializable;
+import pe.mundoliterario.entity.SaleDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+public class SaleDetailMapper {
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-@Entity
-@Table(name="saleDetails")
-public class SaleDetails implements Serializable {
-	private static final long serialVersionUID=1L;
-		
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer saleDetails_id;
-	@Column
+	
 	private Integer saleDetails_quantity;
-	@Column
+	
 	private Double saleDetails_unit_price;
-	@Column
+	
 	private Double saleDetails_subtotal;
 	
-
-	@ManyToOne
-	@JsonBackReference
-	@JoinColumn(name = "sale_id", nullable =false)
-	private Sale sale;
+	private String book;
 	
-	@ManyToOne
-	private Book book;
 	
-	public SaleDetails() {
+	public SaleDetailMapper(SaleDetails saleDetails) {
+		this(saleDetails.getSaleDetails_id(), saleDetails.getSaleDetails_quantity(),
+				saleDetails.getSaleDetails_unit_price(), saleDetails.getSaleDetails_subtotal(),
+				saleDetails.getBook().getBook_name());
 	}
-
-
-
-	public SaleDetails(Integer saleDetails_id, Integer saleDetails_quantity, Double saleDetails_unit_price,
-			Double saleDetails_subtotal, Sale sale, Book book) {
+	
+	public SaleDetailMapper() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public SaleDetailMapper(Integer saleDetails_id, Integer saleDetails_quantity, Double saleDetails_unit_price,
+			Double saleDetails_subtotal, String book) {
 		this.saleDetails_id = saleDetails_id;
 		this.saleDetails_quantity = saleDetails_quantity;
 		this.saleDetails_unit_price = saleDetails_unit_price;
 		this.saleDetails_subtotal = saleDetails_subtotal;
-		this.sale = sale;
 		this.book = book;
 	}
-
-
 
 	public Integer getSaleDetails_id() {
 		return saleDetails_id;
@@ -86,20 +66,14 @@ public class SaleDetails implements Serializable {
 		this.saleDetails_subtotal = saleDetails_subtotal;
 	}
 
-	public Sale getSale() {
-		return sale;
-	}
-
-	public void setSale(Sale sale) {
-		this.sale = sale;
-	}
-
-	public Book getBook() {
+	public String getBook() {
 		return book;
 	}
 
-	public void setBook(Book book) {
+	public void setBook(String book) {
 		this.book = book;
 	}
+	
+	
 	
 }

@@ -10,9 +10,9 @@ import pe.mundoliterario.entity.Book;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
 	
-	//Listar con el nombre exacto
+	//Buscar con el nombre exacto
 	@Query(value = "SELECT * FROM book WHERE book_name = :name", nativeQuery = true)
-    Book findbyName(@Param("name") String name);
+    Book findBookbyName(@Param("name") String name);
 
 	//Listar con nombres similares
 	@Query(value= "SELECT * FROM book b WHERE LOWER(b.book_name) LIKE CONCAT('%',LOWER(:name),'%')", nativeQuery = true)

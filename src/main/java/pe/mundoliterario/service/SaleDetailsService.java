@@ -8,8 +8,8 @@ public interface SaleDetailsService {
 	
 	public abstract Collection<SaleDetails> listDetails(Integer sale_id);
 	
-	public abstract Collection<SaleDetails> listAll(Integer sale_id);
+	public abstract Collection<SaleDetails> listAll();
 	
-	public abstract void create(SaleDetails saledDetails);
+	public abstract void save(SaleDetails saleDetails);
 
 }

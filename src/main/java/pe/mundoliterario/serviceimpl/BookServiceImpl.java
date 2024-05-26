@@ -54,7 +54,7 @@ public class BookServiceImpl implements BookService {
 	@Override
 	@Transactional(readOnly=true)
 	public Book findByName(String book_name) {
-		return r.findbyName(book_name);
+		return r.findBookbyName(book_name);
 	}
 
 

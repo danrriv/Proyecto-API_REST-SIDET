@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,7 @@ public class AuthorController {
 	}
 	
 	@GetMapping("/list")
-	public ResponseEntity<?> list_authors(){
+	public ResponseEntity<?> listAuthor(){
 		Collection<Author> collection = service.findAll();
 		
 		if(collection.isEmpty()) {
@@ -42,7 +43,7 @@ public class AuthorController {
 	}
 
 	@PostMapping("/save")
-	public ResponseEntity<?> save_author(@RequestBody Author author) {
+	public ResponseEntity<?> saveAuthor(@RequestBody Author author) {
 
 		service.insert(author);
 
@@ -65,5 +66,24 @@ public class AuthorController {
 		
 		response.put("message", "Autor no encontrado.");
 		 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+	
+	@PutMapping("/edit/{id}")
+	public ResponseEntity<?> editAuthor(@RequestBody Author author, @PathVariable Integer id) {
+
+		Author db = service.findById(id);
+		
+		Map<String, String> response = new HashMap<>();
+		
+		if(db!=null) {
+			db.setAuthor_name(author.getAuthor_name());
+			service.update(db);
+			
+			response.put("message", "Autor editado correctamente.");
+
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+		}
+		response.put("message", "404 E");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
 }

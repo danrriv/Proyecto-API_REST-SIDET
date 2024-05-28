@@ -48,7 +48,6 @@ public class SaleDetails implements Serializable {
 		this.saleDetails_quantity = saleDetails_quantity;
 		this.saleDetails_unit_price = saleDetails_unit_price;
 		this.saleDetails_subtotal = saleDetails_subtotal;
-		this.sale = sale;
 		this.book = book;
 	}
 

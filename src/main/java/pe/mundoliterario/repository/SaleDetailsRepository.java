@@ -9,7 +9,7 @@ import pe.mundoliterario.entity.SaleDetails;
 
 public interface SaleDetailsRepository extends JpaRepository<SaleDetails, Integer> {
 	
-	@Query(value="SELECT * FROM saleDetails WHERE sale_id =: sale_id",nativeQuery = true)
+	@Query(value="SELECT * FROM sale_details WHERE sale_id =:sale_id",nativeQuery = true)
 	Collection<SaleDetails> obtainSaleDetails(Integer sale_id);
 
 }

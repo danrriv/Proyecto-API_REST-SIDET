@@ -24,6 +24,7 @@ public class SaleMapper {
 				sale.getSale_status(), sale.getSale_date(), sale.getCustomer().getCustomer_names());
 	}
 	
+	
 	public SaleMapper() {
 		// TODO Auto-generated constructor stub
 	}

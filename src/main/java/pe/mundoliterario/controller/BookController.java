@@ -36,7 +36,7 @@ public class BookController {
 
 	//Métodos CRUD
 	@PostMapping("/save")
-	public ResponseEntity<?> save_POST(@RequestBody Book book) {
+	public ResponseEntity<?> saveBook(@RequestBody Book book) {
 		
 		service.insert(book);
 
@@ -47,7 +47,7 @@ public class BookController {
 	}
 
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<?> editar_PUT(@RequestBody Book book, @PathVariable Integer id)
+	public ResponseEntity<?> editBook(@RequestBody Book book, @PathVariable Integer id)
 
 	{
 		Book BookDb = service.findById(id);

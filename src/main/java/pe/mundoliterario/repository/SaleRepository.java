@@ -14,7 +14,7 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
 	@Query(value="SELECT * FROM sale where customer_id =:customer_id", nativeQuery = true)
 	Collection<Sale> listSalesByCustomer(Integer customer_id );
 	
-	@Query(value="SELECT * FROM venta where sale_status = 'Pendiente'", nativeQuery = true)
+	@Query(value="SELECT * FROM sale where sale_status = 'Pendiente'", nativeQuery = true)
 	Collection<Sale> listPendingSales();
 	
 	/*

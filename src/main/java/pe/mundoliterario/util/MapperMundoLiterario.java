@@ -37,6 +37,7 @@ public class MapperMundoLiterario {
 		return collection;
 	}
 	
+	
 	public static Collection<SaleDetailMapper> toSalesD(Collection<SaleDetails>salesd){
 		Collection<SaleDetailMapper> collection = new ArrayList<>();
 		
@@ -46,6 +47,7 @@ public class MapperMundoLiterario {
 		}
 		return collection;
 	}
+	
 	
 
 }

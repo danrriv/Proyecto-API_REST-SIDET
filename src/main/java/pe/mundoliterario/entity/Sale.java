@@ -1,8 +1,11 @@
 package pe.mundoliterario.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="sale")
-public class Sale {
+public class Sale implements Serializable {
 	
 	
 	private static final long serialVersionUID=1L;
@@ -44,12 +47,11 @@ public class Sale {
 	@DateTimeFormat(pattern="yyyy-MM-dd",iso=ISO.DATE)
 	private LocalDate sale_date;
 		
-	@OneToMany(mappedBy = "sale")
-	@JsonManagedReference
-	private Collection<SaleDetails> itemSalesDetail = new ArrayList<>();
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Collection<SaleDetails> itemSalesDetail = new ArrayList<>();
 	
 	@ManyToOne
-	//@JsonBackReference
 	@JoinColumn(name = "customer_id", nullable =false)
 	private Customer customer;
 	

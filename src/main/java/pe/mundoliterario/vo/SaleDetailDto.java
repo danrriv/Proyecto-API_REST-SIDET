@@ -9,31 +9,25 @@ import pe.mundoliterario.entity.SaleDetails;
 
 public class SaleDetailDto {
 
-	
-	@JsonBackReference
-	private Sale sale;
-	
-	private List<SaleDetails> details;
-	
-	public SaleDetailDto() {
-		// TODO Auto-generated constructor stub
-	}
+    private Sale sale;
+    private List<SaleDetails> details;
 
-	public Sale getSale() {
-		return sale;
-	}
+    public SaleDetailDto() {}
 
-	public void setSale(Sale sale) {
-		this.sale = sale;
-	}
+    public Sale getSale() {
+        return sale;
+    }
 
-	public List<SaleDetails> getDetails() {
-		return details;
-	}
+    public void setSale(Sale sale) {
+        this.sale = sale;
+    }
 
-	public void setDetails(List<SaleDetails> details) {
-		this.details = details;
-	}
-	
-	
+    public List<SaleDetails> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<SaleDetails> details) {
+        this.details = details;
+    }
+		
 }

@@ -2,53 +2,56 @@ package pe.mundoliterario.serviceimpl;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pe.mundoliterario.entity.Sale;
+import pe.mundoliterario.repository.SaleRepository;
 import pe.mundoliterario.service.SalesService;
 @Service
 public class SaleServiceImpl implements SalesService {
 
+	
+	@Autowired
+	private SaleRepository repository;
+	
+	
 	@Override
-	public Sale create(Sale sale) {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional
+	public Sale save(Sale sale) {
+		return repository.save(sale);
 	}
 
 	@Override
+	@Transactional
 	public Sale edit(Sale sale) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.save(sale);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Sale findId(Integer sale_id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findById(sale_id).orElse(null);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Collection<Sale> listAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findAll();
 	}
 
 	@Override
-	public Collection<Sale> listForCustomer(Integer clienteId) {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly=true)
+	public Collection<Sale> listForCustomer(Integer customer_id) {
+		return repository.listSalesByCustomer(customer_id);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Collection<Sale> listPending() {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.listPendingSales();
 	}
-
-	@Override
-	public Collection<Sale> listOk() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }

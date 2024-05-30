@@ -13,5 +13,5 @@ public interface CustomerService {
 	public abstract Collection<Customer> list();
 	public abstract Customer find_email(String email);
 	public abstract Customer findByConfirmationToken(String token);
-	public abstract CustomerLoginDto findByEmailDto(String email);
+	public abstract Customer findByEmailDto(String email);
 }

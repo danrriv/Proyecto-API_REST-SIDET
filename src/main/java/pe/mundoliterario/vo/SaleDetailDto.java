@@ -10,6 +10,7 @@ import pe.mundoliterario.entity.SaleDetails;
 public class SaleDetailDto {
 
     private Sale sale;
+    
     private List<SaleDetails> details;
 
     public SaleDetailDto() {}

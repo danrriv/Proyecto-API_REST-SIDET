@@ -62,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public CustomerLoginDto findByEmailDto(String email) {
+	public Customer findByEmailDto(String email) {
 		return customerRepository.findyByEmailDto(email);
 	}
 

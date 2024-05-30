@@ -4,15 +4,15 @@ public class CustomerLoginDto {
 	
 	private Integer customer_id;
 	
-	private String customer_name;
+	private String customer_names;
 
 	
 	public CustomerLoginDto() {
-	}
+	}	
 
-	public CustomerLoginDto(Integer customer_id, String customer_name) {
+	public CustomerLoginDto(Integer customer_id, String customer_names) {
 		this.customer_id = customer_id;
-		this.customer_name = customer_name;
+		this.customer_names = customer_names;
 	}
 
 	public Integer getCustomer_id() {
@@ -25,14 +25,15 @@ public class CustomerLoginDto {
 	}
 
 
-	public String getCustomer_name() {
-		return customer_name;
+	public String getCustomer_names() {
+		return customer_names;
 	}
 
 
-	public void setCustomer_name(String customer_name) {
-		this.customer_name = customer_name;
+	public void setCustomer_names(String customer_names) {
+		this.customer_names = customer_names;
 	}
+	
 	
 	
 	

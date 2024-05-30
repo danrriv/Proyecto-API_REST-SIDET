@@ -22,7 +22,6 @@ import pe.mundoliterario.entity.Login;
 import pe.mundoliterario.entity.jwt.JwtCustomer;
 import pe.mundoliterario.jwt.JwtGeneratorCustomer;
 import pe.mundoliterario.service.CustomerService;
-import pe.mundoliterario.vo.CustomerLoginDto;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -77,13 +76,14 @@ public class CustomerController {
 	
 	
 	@GetMapping("/customer/nameId/{email}")
-	public ResponseEntity<?> findNameId(String email){
-		CustomerLoginDto data = customerService.findByEmailDto(email);
+	public ResponseEntity<?> findNameId(@PathVariable String email){
+		Customer data = customerService.findByEmailDto(email);
+		 
 		if(data != null) {
+			
 			return new ResponseEntity<>(data,HttpStatus.OK);
 		}
-		return new ResponseEntity<>("Error al obtener los datos.", HttpStatus.NOT_FOUND);
-		
+		return new ResponseEntity<>("Error al obtener los datos.", HttpStatus.NOT_FOUND);	
 	}
 	
 	@GetMapping("/customer/list")

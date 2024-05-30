@@ -7,14 +7,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import pe.mundoliterario.entity.Sale;
 import pe.mundoliterario.entity.SaleDetails;
@@ -22,20 +22,22 @@ import pe.mundoliterario.service.SaleDetailsService;
 import pe.mundoliterario.service.SalesService;
 import pe.mundoliterario.util.MapperMundoLiterario;
 import pe.mundoliterario.vo.SaleDetailDto;
-
 @RestController
-
-public class SaleController {
+@RequestMapping("/sale")
+@CrossOrigin(origins = "http://localhost:4200")
+public class SalesController {
+	
 	@Autowired
 	SalesService saleService;
 	
 	@Autowired
 	SaleDetailsService detailsService;
-
-	public SaleController() {
+	
+	public SalesController() {
+		// TODO Auto-generated constructor stub
 	}
-
-    @PostMapping("/sale/save")
+	@CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/save")
     public ResponseEntity<?> createSale(@RequestBody SaleDetailDto saleDetailDto) {
         Sale sale = saleDetailDto.getSale();
         List<SaleDetails> saleDetailsList = saleDetailDto.getDetails();
@@ -54,7 +56,7 @@ public class SaleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     
-    @PutMapping("/sale/confirm/{sale_id}")
+    @PutMapping("/confirm/{sale_id}")
     public ResponseEntity<?> confirm_sale(@PathVariable Integer sale_id) {
         Sale sale = saleService.findId(sale_id);
 
@@ -74,23 +76,28 @@ public class SaleController {
     }
     
     
-	@GetMapping("/sale/details/{id}")
+	@GetMapping("/details/{id}")
 	public ResponseEntity<?> getDetails(@PathVariable Integer id){
 		return new ResponseEntity<>(MapperMundoLiterario.toSalesD(detailsService.listDetails(id)), HttpStatus.OK);
 	}
 	
 	
-	@GetMapping("/sale/listPending")
+	@GetMapping("/listPending")
 	public ResponseEntity<?> getPending(){
 		return new ResponseEntity<>(MapperMundoLiterario.toSales(saleService.listPending()), HttpStatus.OK);
 	}
 	
-	@GetMapping("/sale/customer/{id}")
+	@GetMapping("/list")
+	public ResponseEntity<?> listAll(){
+		return new ResponseEntity<>(MapperMundoLiterario.toSales(saleService.listAll()), HttpStatus.OK);
+	}
+	
+	@GetMapping("/customer/{id}")
 	public ResponseEntity<?> getCustomerPurchases(@PathVariable Integer id){
 		return new ResponseEntity<>(MapperMundoLiterario.toSales(saleService.listForCustomer(id)), HttpStatus.OK);
 	}
 	
-	@GetMapping("/sale/find/{id}")
+	@GetMapping("/find/{id}")
 	public ResponseEntity<?> findSale(@PathVariable Integer id){
 		 Sale sale = saleService.findId(id);
 		 
@@ -102,4 +109,5 @@ public class SaleController {
 	
 	
 	
+
 }

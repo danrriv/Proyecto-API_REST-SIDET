@@ -85,4 +85,10 @@ public class BookServiceImpl implements BookService {
 		return r.listbySubGenre(id);
 	}
 
+
+	@Override
+	public Collection<Book> searchBySubgenre(String subgenre) {
+		return r.searchBySubgenre(subgenre);
+	}
+
 }

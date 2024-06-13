@@ -199,7 +199,19 @@ public class BookController {
 		return new ResponseEntity<>("¡No hay libros registrados!", HttpStatus.NOT_FOUND);
 	}
 	
-	
+	@GetMapping("/searchBySubgenre/{subgenre}")
+	public ResponseEntity<?>searchBySubgenre(@PathVariable String subgenre) {
+		Collection<Book> books = service.searchBySubgenre(subgenre);
+
+		if (!books.isEmpty()) {
+			return new ResponseEntity<>(books, HttpStatus.OK);
+		}
+
+		Map<String, String> response = new HashMap<>();
+		response.put("message", "¡No hay libros registrados!");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+	}
 
 	
 }

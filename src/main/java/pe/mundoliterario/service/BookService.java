@@ -25,4 +25,6 @@ public interface BookService {
     public abstract Collection<Book> listByGenre(Integer id);
     
     public abstract Collection<Book> listBySubgenre(Integer id);
+    
+    public abstract Collection<Book> searchBySubgenre(String subgenre);
 }

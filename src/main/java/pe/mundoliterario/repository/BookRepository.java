@@ -34,4 +34,10 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 	//Listar por subgénero
 	@Query(value= "SELECT * FROM book where subgenre_id = :id", nativeQuery = true)
 	Collection<Book> listbySubGenre(Integer id);
+	
+	//Buscar por subgénero
+	@Query(value= "SELECT * FROM book JOIN subgenre ON book.subgenre_id = subgenre.subgenre_id\r\n"
+			+ "JOIN author ON book.author_id = author.author_id\r\n"
+			+ "WHERE subgenre.subgenre_name =:subgenre", nativeQuery = true)
+	 Collection<Book> searchBySubgenre(@Param("subgenre") String subgenre);
 }

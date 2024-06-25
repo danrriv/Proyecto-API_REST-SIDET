@@ -8,7 +8,7 @@ public interface SalesService {
 
 	public abstract Sale save(Sale sale);
 	
-	public abstract Sale edit(Sale sale);
+	public abstract Sale update(Sale sale);
 	
 	public abstract Sale findId(Integer sale_id);
 	

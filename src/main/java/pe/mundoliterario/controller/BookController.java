@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import pe.mundoliterario.service.BookService;
 import pe.mundoliterario.util.MapperMundoLiterario;
+import pe.mundoliterario.vo.BookStockDto;
 import pe.mundoliterario.entity.Book;
 
 
@@ -96,6 +98,24 @@ public class BookController {
 		response.put("message", "404 E");
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
+	
+	//Actualizar stock
+    @PutMapping("/updateStock/{book_id}")
+    public ResponseEntity<?> update_stock(@PathVariable Integer book_id, @RequestBody BookStockDto dto) {
+    	
+    	Book book = service.findById(book_id);
+    	
+    	Map<String, String> response = new HashMap<>();
+    	
+    	if(book!=null) {
+    		book.setBook_stock(book.getBook_stock() + dto.getStock());
+    		service.update(book);
+    		response.put("message", "Stock actulizado correctamente.");
+    		return ResponseEntity.status(HttpStatus.OK).body(response);
+    	}
+    	response.put("message", "404 E");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response); 	
+    }
 
 
 	//Búsquedas

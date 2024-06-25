@@ -25,7 +25,7 @@ public class SaleServiceImpl implements SalesService {
 
 	@Override
 	@Transactional
-	public Sale edit(Sale sale) {
+	public Sale update(Sale sale) {
 		return repository.save(sale);
 	}
 

@@ -2,7 +2,6 @@ package pe.mundoliterario.vo;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import pe.mundoliterario.entity.Sale;
 import pe.mundoliterario.entity.SaleDetails;

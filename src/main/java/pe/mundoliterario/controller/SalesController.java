@@ -64,13 +64,12 @@ public class SalesController {
 
         if (sale != null) {
             sale.setSale_status("Entregado");
-            saleService.edit(sale);
+            saleService.update(sale);
 
             response.put("message", "Venta entregada correctamente.");
 
             return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
-        
+        }     
         response.put("message", "404 E");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

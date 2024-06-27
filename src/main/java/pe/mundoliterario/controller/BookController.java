@@ -116,6 +116,19 @@ public class BookController {
     	response.put("message", "404 E");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response); 	
     }
+    
+    @GetMapping("/findStock/{id}")
+    public ResponseEntity<?> buscarStock(@PathVariable Integer id) {
+        Book bookBd = service.findById(id);
+
+        if (bookBd != null) {
+            BookStockDto dto = new BookStockDto();
+            dto.setStock(bookBd.getBook_stock());
+            return new ResponseEntity<>(dto, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("¡Libro no existe!", HttpStatus.NOT_FOUND);
+    }
+
 
 
 	//Búsquedas
